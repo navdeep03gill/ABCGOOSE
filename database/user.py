@@ -7,6 +7,7 @@ import random
 
 app = Flask(__name__)
 
+
 CORS(app, support_credentials=True)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 

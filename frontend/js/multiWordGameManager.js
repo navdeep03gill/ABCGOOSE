@@ -1,4 +1,4 @@
-
+// Words keep on alternating
 
 var messages = document.getElementById('messages');
 var input = document.getElementById('input');
@@ -8,50 +8,14 @@ var gameMessage = document.getElementById('gameMessage');
 var playButton = document.getElementById('playAgainButton');
 var timerText1 = document.getElementById('timerText1');
 var timerText2 = document.getElementById('timerText2');
-var timer; 
-var timeLeft = 10;
-var currGuess;
-var firstApiCall = true;
-var currPrompt = null;
 
+var timer;
+var timeLeft = 30;
+var correctGuesses = [];
 var allWords = null;
+var currPrompt = null;
+var synonymList = null;
 
-
-
-function getInput(){
-    if (input.value) {
-        currGuess = input.value;
-        input.value = '';
-        evaluateAnswer();
-    }
-}
-
-function evaluateAnswer(){
-    if(currPrompt.synonyms.includes(currGuess)){
-        // get a closeness score here
-        var fraction = 1;
-        var currScore = parseInt(fraction * 100);
-        console.log(currScore);
-        score.textContent = (parseInt(score.textContent) + currScore).toString();
-        gameMessage.textContent = "Correct Guess! Next Word:";
-        getPrompt();
-    }
-    else {
-        gameMessage.textContent = "Incorrect Guess! Keep Trying!";
-    }
-  }
-
-function resetGame(){
-    timeLeft = 10;
-    firstApiCall = true;
-    gameMessage.textContent = "";
-    playAgainButton.style.visibility = "hidden";
-    currPrompt = null;
-    currGuess = '';
-    score.textContent = (0).toString();
-    console.log("game resetted");
-    return;
-}
 
 function updateTimer(){
     timeLeft -= 1;
@@ -62,35 +26,60 @@ function updateTimer(){
     else { gameOver(); }
 }
 
-// What to do when the timer runs out
-// IMPORTANT: run playbutton request before cancelInterval(timer)
-function gameOver() {
-    // This cancels the setInterval, so the updateTimer stops getting called
-    playButton.textContent = "Play again!";
-    playButton.style.visibility = "visible";
-    clearInterval(timer);
-    input.style.visibility = "hidden";
-    sendButton.style.visibility = "hidden";
 
-    timerText1.style.visibility = "hidden";
-    timerText2.style.visibility = "hidden";
-    
-    $("#timer").html(null);
-    
-    showAnswer();
+function getInput(){
+    var input = document.getElementById('input');
+    if (input.value) {
+        var currGuess = input.value;
+        input.value = '';
+        currGuess = (currGuess).toLowerCase();
+        evaluateAnswer(currGuess);
+    }
 }
 
-async function getPrompt() {
+function getPrompt(){
+    var max = allWords.length;
+    var idx = Math.floor(Math.random() * max);
+    var currIdx = idx;
+    console.log(currIdx);
+
+    const newWord = allWords[currIdx];
+    synonymList = newWord.synonyms;
+    const newSynList = Object.keys(synonymList);
+    synonymList = newWord.synonyms;
+    console.log(synonymList);
+
     currPrompt = {
-        word: "Perspicacious",
-        definition: "the quality of having a ready insight into things.\n`\"the perspicacity of her remarks\"", 
-        synonyms: ["perception", "shrewdness", "acumen", "discernment", "judgement", "intelligence", "discrimination"]
+        word: newWord.word,
+        definition: newWord.definition, 
+        synonyms: newSynList
     };
     console.table(currPrompt);
     promptOutput.value = currPrompt.word + ":\n" + currPrompt.definition;
 }
 
-//show syns for last unguessed word
+
+function evaluateAnswer(currGuess){
+    if (correctGuesses.includes(currGuess)){
+        gameMessage.textContent = "You Already Guessed This Word! Keep Trying!";
+    }
+    else if (currPrompt.synonyms.includes(currGuess)){
+        console.log(synonymList);
+
+        var currScore = synonymList[currGuess];
+
+        console.log(currScore);
+
+        score.textContent = (parseInt(score.textContent) + currScore).toString();
+        gameMessage.textContent = "Correct Guess! Next Word:";
+        correctGuesses.push(currGuess);
+        getPrompt();
+    }
+    else {
+        gameMessage.textContent = "Incorrect Guess! Keep Trying!";
+    }
+}
+
 function showAnswer(){
     gameMessage.textContent = "Time's up!\nPlay Again!\n";
     output = "Time's up! The synonyms for " + currPrompt.word + " are:\n";
@@ -101,7 +90,34 @@ function showAnswer(){
 }
 
 
-function start() {
+function resetGame(){
+    timeLeft = 30;
+    gameMessage.textContent = "";
+    playAgainButton.style.visibility = "hidden";
+    currPrompt = null;
+    score.textContent = (0).toString();
+    correctGuesses = [];
+    //currIdx = Math.floor(Math.random() * max) ;
+    console.log("game resetted");
+    return;
+}
+
+
+function gameOver(){
+    // This cancels the setInterval, so the updateTimer stops getting called
+    playButton.textContent = "Play again!";
+    playButton.style.visibility = "visible";
+    clearInterval(timer);
+    input.style.visibility = "hidden";
+    sendButton.style.visibility = "hidden";
+    timerText1.style.visibility = "hidden";
+    timerText2.style.visibility = "hidden";
+    $("#timer").html(null);
+    showAnswer();
+}
+
+
+function start(){
     if (timeLeft == 0 || playAgainButton.textContent == "Play again!"){
         resetGame();
     }
@@ -121,8 +137,8 @@ function start() {
     // It will be a whole second before the time changes, so we'll call the update
     // once ourselves
     playAgainButton.style.visibility = "hidden";
-  
-    updateTimer(); 
+
+    updateTimer();
 }
 
 $(document).on("keypress", function(e) {
@@ -152,14 +168,16 @@ function displayResult(result){
     }
 }
 
-async function fetchAllWords(){
+
+function fetchAllWords(){
     fetch(`http://127.0.0.1:5000/api/words`)
         .then((response) => response.json())
         .then((data) => {
+            console.log(data);
             allWords = data;
-            console.log(allWords);
         }
     );
 }
 
 fetchAllWords();
+

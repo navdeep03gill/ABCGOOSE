@@ -80,26 +80,32 @@ class WordDatabase:
         conn = sqlite3.connect('words.db')
         c = conn.cursor()
         c.execute('''
-            SELECT Words.word_name, Words.definition, Synonyms.synonym, Synonyms.score
+            SELECT Words.word_id, Words.word_name, Words.definition, Synonyms.synonym, Synonyms.score
             FROM Words
             LEFT JOIN Synonyms ON Words.word_id = Synonyms.word_id
         ''')
         result = {}
         for row in c.fetchall():
-            word_name, definition, synonym, score = row
-            if word_name not in result:
-                result[word_name] = {'definition': definition, 'synonyms': {}}
-            result[word_name]['synonyms'][synonym] = score
+            word_id, word_name, definition, synonym, score = row
+            if word_id not in result:
+                result[word_id] = {'word': word_name, 'definition': definition, 'synonyms': {}}
+            result[word_id]['synonyms'][synonym] = score
 
-        for word_name, word_info in result.items():
-            print(f"{word_name}:")
+        toret = []
+        for word_id, word_info in result.items():
+            toret.append(word_info)
+
+        for word_id, word_info in result.items():
+            print(f" {word_id}:")
+            print(f"  Word: {word_info['word']}:")
             print(f"  Definition: {word_info['definition']}")
             print("  Synonyms:")
             for synonym, score in word_info['synonyms'].items():
                 print(f"    {synonym}: {score}")
             print()
         conn.close()
-        return result
+        return toret
+    
 
     def populateTable(self):
         for word in allSynonyms:
