@@ -2,10 +2,8 @@ from ntpath import realpath
 from synonyms import allSynonyms
 import sys
 
-# sys.path.append(
-#     "../"
-# )
-# from webscrape.scraperThesaurus import fetchNewWords
+sys.path.append("../")
+from webscrape.scraperThesaurus import fetchNewWords
 
 import sqlite3
 
@@ -43,9 +41,6 @@ class WordDatabase:
         )
 
     def deleteWord(self, word_name):
-        # conn = sqlite3.connect("words.db")
-        # c = conn.cursor()
-        # Get the right word_id
         self.c.execute("SELECT word_id FROM WORDS WHERE word_name = ?", (word_name,))
         result = self.c.fetchall()
         if len(result) == 0:
@@ -62,9 +57,6 @@ class WordDatabase:
         self.conn.close()
 
     def addWord(self, word_name, definition, synonyms):
-        # conn = sqlite3.connect("words.db")
-        # c = conn.cursor()
-        # Insert word into Words table
         self.c.execute(
             "INSERT OR IGNORE INTO Words (word_name, definition) VALUES (?, ?)",
             (word_name, definition),
@@ -80,9 +72,6 @@ class WordDatabase:
         self.conn.commit()
 
     def get_word_with_synonyms(self, word_name):
-        # conn = sqlite3.connect("words.db")
-        # c = conn.cursor()
-        # Get word details along with synonyms for the given word_name
         self.c.execute(
             """
             SELECT Words.word_name, Words.definition, Synonyms.synonym
@@ -97,9 +86,6 @@ class WordDatabase:
         return result
 
     def get_word_with_syn_and_score(self, word_name):
-        # conn = sqlite3.connect("words.db")
-        # c = conn.cursor()
-        # Get word details along with synonyms and scores for the given word_name
         self.c.execute(
             """
             SELECT Words.word_name, Words.definition, Synonyms.synonym
@@ -142,26 +128,61 @@ class WordDatabase:
         toret = []
         for word_id, word_info in result.items():
             toret.append(word_info)
-
-        # for word_id, word_info in result.items():
-        #     print(f" {word_id}:")
-        #     print(f"  Word: {word_info['word']}:")
-        #     print(f"  Definition: {word_info['definition']}")
-        #     print("  Synonyms:")
-        #     for synonym in word_info["synonyms"]:
-        #         print(f"    {synonym}")
-        #     print()
         return toret
 
     def populateTable(self, newSynonyms):
         for word in newSynonyms:
+            self.c.execute(
+                """
+                SELECT *
+                FROM Words
+                WHERE word_name = ?
+                """,
+                (word,),
+            )
+            result = self.c.fetchall()
+            if len(result) > 0:
+                continue
             self.addWord(
                 word, newSynonyms[word]["definition"], newSynonyms[word]["synonyms"]
             )
 
+    def checkDuplicates(self):
+        self.c.execute(
+            """
+                SELECT word_name, COUNT(*)
+                FROM WORDS 
+                GROUP BY word_name
+                HAVING COUNT(*) > 1
+            """
+        )
+        result = self.c.fetchall()
+
+    def cleanTables(self):
+        self.c.execute(
+            """
+            SELECT * FROM Words
+            WHERE NOT EXISTS (
+                    SELECT 1
+                    FROM Synonyms
+                    WHERE Synonyms.word_id = Words.word_id
+                )
+            """
+        )
+        result = self.c.fetchall()
+        print(result)
+        self.c.execute(
+            """
+            DELETE FROM Words
+            WHERE NOT EXISTS (
+                    SELECT 1
+                    FROM Synonyms
+                    WHERE Synonyms.word_id = Words.word_id
+                )
+            """
+        )
+
     def wordCount(self):
-        # conn = sqlite3.connect("words.db")
-        # c = conn.cursor()
         self.c.execute(
             """
             SELECT COUNT(*)
@@ -185,9 +206,14 @@ def main():
     # wordDb.dropTable("Words")
     # wordDb.dropTable("Synonyms")
     # wordDb.createTables()
-    # wordDb.populateTable()
-    print("wordDB word count: ")
+
+    newWords = fetchNewWords()
+    print(newWords)
+    wordDb.populateTable(newWords)
+    wordDb.checkDuplicates()
+    # print("wordDB word count: ")
     wordDb.wordCount()
+    wordDb.commitChanges()
 
 
 if __name__ == "__main__":

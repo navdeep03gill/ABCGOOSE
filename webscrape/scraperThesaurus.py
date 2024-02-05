@@ -58,35 +58,33 @@ def synonyms(word):
     return results_json
 
 
+def genNewWord():
+    rand_word_url = "https://random-word-api.vercel.app/api?words=1"
+    response = requests.get(rand_word_url)
+    response_json = response.json()
+    print(response_json)
+    word = response_json[0]
+    return word
+
+
 def fetchNewWords():
-    medium_word_list = [
-        "benevolent",  # altruistic
-        "capitulate",  # surrender
-        "disparate",  # distinct
-        "ephemeral",  # fleeting
-        "equivocal",  # ambiguous
-        "exacerbate",  # worsen
-        "furtive",  # secretive
-        "gregarious",  # sociable
-        "hackneyed",  # cliché
-        "insidious",  # deceitful
-        "juxtapose",  # compare
-        "lament",  # mourn
-        "myriad",  # countless
-        "nostalgia",  # longing
-        "obfuscate",  # confuse
-        "paradox",  # contradiction
-        "quell",  # suppress
-        "resilient",  # tenacious
-        "sycophant",  # flatterer
-        "taciturn",  # reserved
-    ]
+    wordList = []
+    for i in range(0, 10):
+        wordList.append(genNewWord())
+
     allSyns = {}
-    for word in medium_word_list:
+    for word in wordList:
         defn = definition(word)
         defin = defn["definition"]
+        if len(defin) == 0:
+            print(word, "definition missing")
+            continue
         syn = synonyms(word)
         syns = syn["synonyms"]
+        if len(syns) == 0:
+            print(word, "synonym missing")
+            continue
+
         allSyns[word] = {"definition": defin, "synonyms": syns}
         print(word, ": ", allSyns[word])
         print("\n")
@@ -95,4 +93,3 @@ def fetchNewWords():
 
 
 # synonyms("righteous")
-fetchNewWords()
