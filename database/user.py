@@ -1,6 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS, cross_origin
-
 import sqlite3
 from db import WordDatabase
 import random
@@ -8,10 +7,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-
-
-CORS(app, support_credentials=True)
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}}, support_credentials=True)
 
 
 def connect_to_db():
@@ -29,6 +25,7 @@ def get_words():
 def get_random_key_value_pairs(my_dict):
     wordDb = WordDatabase()
     allWords = wordDb.get_all_words_with_synonyms()
+    print(wordDb.wordCount())
 
     if len(allWords) < 5:
         raise ValueError("Dictionary should have at least 5 items")
@@ -39,9 +36,9 @@ def get_random_key_value_pairs(my_dict):
 
 
 @app.route("/api/words", methods=["GET"])
-@cross_origin(origin="*")
 def api_get_words():
-    return jsonify(get_words())
+    response = jsonify(get_words())
+    return response
 
 
 if __name__ == "__main__":

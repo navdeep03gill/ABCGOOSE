@@ -3,7 +3,7 @@ from synonyms import allSynonyms
 import sys
 
 sys.path.append("../")
-from webscrape.scraperThesaurus import fetchNewWords
+from webscrape.scraperWordHippo import fetchNewWords
 
 import sqlite3
 
@@ -40,6 +40,10 @@ class WordDatabase:
         """
         )
 
+    def deleteAllRows(self):
+        self.c.execute("DELETE FROM WORDS WHERE word_id IS NOT NULL")
+        self.c.execute("DELETE FROM SYNONYMS WHERE synonym_id IS NOT NULL")
+
     def deleteWord(self, word_name):
         self.c.execute("SELECT word_id FROM WORDS WHERE word_name = ?", (word_name,))
         result = self.c.fetchall()
@@ -55,6 +59,22 @@ class WordDatabase:
         )
         self.conn.commit()
         self.conn.close()
+
+    def previewWords(self):
+        self.c.execute(
+            """
+            SELECT Words.word_name
+            FROM Words
+            ORDER BY RANDOM()
+            LIMIT 10
+            """
+        )
+        result = self.c.fetchall()
+        wordList = []
+        for item in result:
+            wordList.append(item[0])
+            self.preview_word_and_syn(item[0])
+        print(wordList)
 
     def addWord(self, word_name, definition, synonyms):
         self.c.execute(
@@ -85,7 +105,7 @@ class WordDatabase:
         print(result)
         return result
 
-    def get_word_with_syn_and_score(self, word_name):
+    def preview_word_and_syn(self, word_name):
         self.c.execute(
             """
             SELECT Words.word_name, Words.definition, Synonyms.synonym
@@ -204,14 +224,14 @@ class WordDatabase:
 def main():
     wordDb = WordDatabase()
     # wordDb.dropTable("Words")
-    # wordDb.dropTable("Synonyms")
+    # wordDb.dropTable("Synyonms")
     # wordDb.createTables()
-
-    newWords = fetchNewWords()
-    print(newWords)
-    wordDb.populateTable(newWords)
-    wordDb.checkDuplicates()
-    # print("wordDB word count: ")
+    # newWords = fetchNewWords()
+    # wordDb.populateTable(newWords)
+    duplicates = wordDb.checkDuplicates()
+    print(duplicates)
+    print("wordDB word count: ")
+    # wordDb.previewWords()
     wordDb.wordCount()
     wordDb.commitChanges()
 

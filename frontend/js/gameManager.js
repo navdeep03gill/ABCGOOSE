@@ -14,7 +14,7 @@ class gameManager {
     this.currIdx = null;
 
     this.timer;
-    this.timeLeft = 30;
+    this.timeLeft = time;
     this.correctGuesses = [];
     this.allWords = null;
     this.currPrompt = null;
@@ -27,6 +27,20 @@ class gameManager {
   }
 
   fetchAllWords() {
+    // let url = "http://127.0.0.1:5000/api/v1/private";
+    // let username = "admin";
+    // let password = "SuperSecretPwd";
+    // let headers = { Authorization: "Basic " + btoa("admin:SuperSecretPwd") };
+    // fetch(url, { method: "GET", headers: headers })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
+
+    let url = "http://127.0.0.1:5000/api/words";
+    let username = "admin";
+    let password = "SuperSecretPwd";
+    let headers = { Authorization: "Basic " + btoa(`${username}:${password}`) };
     fetch(`http://127.0.0.1:5000/api/words`)
       .then((response) => response.json())
       .then((data) => {
@@ -218,8 +232,4 @@ class singleWordGameManager extends gameManager {
   }
 }
 
-var gameOn = new gameManager(30, 2);
-
-var singleGameOn = new gameManager(30, 1);
-
-//gameOn.startEventListener();
+var gameOn = new gameManager(60, 2);

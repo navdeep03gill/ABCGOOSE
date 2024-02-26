@@ -163,5 +163,4 @@ function fetchAllWords() {
       console.log(allWords);
     });
 }
-
 fetchAllWords();
