@@ -20,28 +20,18 @@ class gameManager {
     this.currPrompt = null;
     this.synonymList = null;
 
-    this.gameMode = gameMode; // 1 for single, 2 for mmulti
+    this.gameMode = gameMode;
 
     this.fetchAllWords();
     this.startEventListener();
   }
 
   fetchAllWords() {
-    // let url = "http://127.0.0.1:5000/api/v1/private";
-    // let username = "admin";
-    // let password = "SuperSecretPwd";
-    // let headers = { Authorization: "Basic " + btoa("admin:SuperSecretPwd") };
-    // fetch(url, { method: "GET", headers: headers })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   });
-
-    let url = "http://127.0.0.1:5000/api/words";
+    let url = "http://127.0.0.1:5000/api/v1/words";
     let username = "admin";
     let password = "SuperSecretPwd";
     let headers = { Authorization: "Basic " + btoa(`${username}:${password}`) };
-    fetch(`http://127.0.0.1:5000/api/words`)
+    fetch(url, { method: "GET", headers: headers })
       .then((response) => response.json())
       .then((data) => {
         this.allWords = data;
