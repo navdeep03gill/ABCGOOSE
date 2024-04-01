@@ -1,5 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
   text-align: center;
+  height: auto;
 }
 
 .App-logo {
@@ -35,6 +40,10 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.top-header {
+  margin-top: 10vh;
 }
 
 .inputbox {
@@ -73,4 +82,73 @@
 .gameButton:hover {
   background-color: rgb(74, 163, 252);
   color: rgb(214, 213, 213);
+}
+
+.btn {
+  color: white;
+  font-weight: 500;
+  /*padding: 0.5rem 1rem;*/
+  border-radius: 0.25rem;
+  /* padding-left: 30px;
+  padding-right: 30px; */
+  /* width: 50%; */
+  min-width: 150px;
+  min-height: 50px;
+}
+
+.btn-blue {
+  background-color: #3d9ae5; /* Replace with your desired blue color */
+  color: #ffffff; /* Text color */
+  font-size: 20px;
+}
+
+.btn-blue:hover {
+  background-color: #1d598a; /* Darker shade of blue on hover */
+  font-weight: 600;
+}
+
+.btn-exit {
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: #5f1616;
+  border-radius: 0.25rem;
+  min-width: 120px;
+  min-height: 40px;
+}
+
+.btn-exit:hover {
+  background-color: #8a1d4e; /* Darker shade of blue on hover */
+}
+
+.wordpromptarea {
+  width: 100%;
+  min-height: 100px;
+}
+
+.scoretext {
+  font-size: 40px;
+  margin-top: 40px;
+}
+
+.custom-grid {
+  height: auto;
+}
+
+.gameInputBox {
+  width: 80%;
+  height: 50px;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 5px;
+  padding-left: 10px;
+}
+
+.send-button {
+  height: 50px;
+}
+.game-message {
+  margin-top: 20px;
+  margin-bottom: 50px;
+  font-size: 30px;
 }
