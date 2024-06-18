@@ -1,40 +1,41 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/App.css";
-import goose from "../imgs/goose-transparent.png";
+import leftgoose from "../imgs/goose-transparent-face-left.png";
+import rightgoose from "../imgs/goose-transparent-face-right.png";
 
 function Home() {
   const navigate = useNavigate();
   return (
     <div className="App flex justify-center items-center">
-      <div class="container">
-        <div class="border-b border-gray-900/10 pb-12"></div>
-        <div class="flex justify-center">
-          <h1 class="title">ABCGoose</h1>
+      <div>
+        <div className="border-b border-gray-900/10 pb-12"></div>
+        <div className="flex justify-center">
+          <h1 className="title">ABCGoose</h1>
         </div>
-        <div class="grid grid-cols-2 hover-rotate gap-4 flex justify-center">
-          <div class="flex justify-end">
-            <img class="gooseimgrvs" src={goose} alt="" />
+        <div className="hover-rotate gap-4 flex">
+          <div className="flex justify-end">
+            <img className="gooseimgleft" src={rightgoose} alt="" />
           </div>
-          <div class="flex justify-start">
-            <img class="gooseimg" src={goose} alt="" />
+          <div className="flex justify-start">
+            <img className="gooseimgright" src={leftgoose} alt="" />
           </div>
         </div>
-        <div class="mt-10 grid grid-cols-1 grid-rows-2">
-          <div class="col-md-auto">
+        <div className="mt-10 grid grid-cols-1 grid-rows-2">
+          <div className="col-md-auto">
             <button
               onClick={() => navigate("/singleWord")}
-              class="gameButton hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="gameButton"
             >
               Single Word Mode
             </button>
           </div>
         </div>
-        <div class="row d-flex justify-content-center">
-          <div class="col-md-auto">
+        <div className="row d-flex justify-content-center">
+          <div className="col-md-auto">
             <button
               onClick={() => navigate("/multiWord")}
-              class="gameButton hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="gameButton"
             >
               Multiple Word Mode
             </button>

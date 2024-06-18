@@ -11,8 +11,15 @@ function MultiWord() {
     const fetchData = async () => {
       try {
         const data = await fetchAllWords();
-        console.log(data);
-        setAllWords(data);
+        //console.log(data);
+        let improvedData = data.map((word) => {
+          return {
+            ...word,
+            synonyms: word.synonyms.map((synonym) => synonym.toLowerCase()),
+          };
+        });
+        console.log(improvedData);
+        setAllWords(improvedData);
       } catch (error) {
         console.error("Error fetching allWords: ", error);
       }

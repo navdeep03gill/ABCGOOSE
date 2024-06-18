@@ -57,7 +57,7 @@ function MultiWordGameBoard({ time, allWords }) {
 
   const getInput = () => {
     if (input) {
-      var currGuess = input;
+      var currGuess = input.toLowerCase();
       setInput("");
       evaluateAnswer(currGuess);
     }

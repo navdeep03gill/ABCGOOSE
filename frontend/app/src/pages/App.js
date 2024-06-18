@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "../css/App.css";
-import goose from "../imgs/goose-transparent.png";
 import Home from "./home";
 import MultiWord from "./multiWord";
 import SingleWord from "./singleWord";
