@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "../css/App.css";
 import MultiWordGameBoard from "../gameManagers/multiWordGameBoard";
 import { fetchAllWords } from "../utils/fetchAllWords";
-//import singleWordGame from "../gameManagers/singleWordGame";
 
 function MultiWord() {
   const [allWords, setAllWords] = useState([]);

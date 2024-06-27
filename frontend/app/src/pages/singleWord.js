@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "../css/App.css";
 import SingleWordGameBoard from "../gameManagers/singleWordGameBoard";
 import { fetchAllWords } from "../utils/fetchAllWords";
-//import singleWordGame from "../gameManagers/singleWordGame";
 
 function SingleWord() {
   const [allWords, setAllWords] = useState([]);

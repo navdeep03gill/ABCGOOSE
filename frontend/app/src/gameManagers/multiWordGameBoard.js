@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../css/App.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function MultiWordGameBoard({ time, allWords }) {
@@ -20,8 +19,8 @@ function MultiWordGameBoard({ time, allWords }) {
   const [currPrompt, setCurrPrompt] = useState(null);
   const navigate = useNavigate();
 
-  var currIdx = null;
-  var correctGuesses = []; // may need state here, but I doubt it
+  let currIdx = null;
+  let correctGuesses = [];
 
   useEffect(() => {
     console.log(currPrompt);
@@ -110,7 +109,7 @@ function MultiWordGameBoard({ time, allWords }) {
 
   const showAnswer = () => {
     setGameMessage("Time's up!\nPlay Again!\n");
-    var output = "Time's up! The synonyms for " + currPrompt.word + " are:\n";
+    let output = `Time's up!\nWord: ${currPrompt.word}\nDefinition: ${currPrompt.definition}\nThe synonyms for ${currPrompt.word} are:\n`;
     for (const syn of currPrompt.synonyms) {
       output += syn + ", ";
     }
