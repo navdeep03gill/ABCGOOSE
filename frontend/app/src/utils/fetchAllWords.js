@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useState, useEffect } from "react";
 
 const fetchAllWords = () => {
   let url = "http://127.0.0.1:5000/api/v1/words";
@@ -13,4 +14,28 @@ const fetchAllWords = () => {
     });
 };
 
-export { fetchAllWords };
+const useFetchWords = () => {
+  const [allWords, setAllWords] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchAllWords();
+        let improvedData = data.map((word) => {
+          return {
+            ...word,
+            synonyms: word.synonyms.map((synonym) => synonym.toLowerCase()),
+          };
+        });
+        setAllWords(improvedData);
+      } catch (error) {
+        console.error("Error fetching allWords: ", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  return allWords;
+};
+
+export default useFetchWords;

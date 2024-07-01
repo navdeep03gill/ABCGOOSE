@@ -1,31 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../css/App.css";
-import SingleWordGameBoard from "../gameManagers/singleWordGameBoard";
-import { fetchAllWords } from "../utils/fetchAllWords";
+import SingleGameBoard from "../gameManagers/singleGameBoard";
+import useFetchWords from "../utils/fetchAllWords";
 
 function SingleWord() {
-  const [allWords, setAllWords] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchAllWords();
-        console.log(data);
-        setAllWords(data);
-      } catch (error) {
-        console.error("Error fetching allWords: ", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const allWords = useFetchWords();
 
   return (
     <div className="App flex justify-center items-center">
       <div className="container">
-        <SingleWordGameBoard
-          time={30}
-          allWords={allWords}
-        ></SingleWordGameBoard>
+        <SingleGameBoard time={30} allWords={allWords}></SingleGameBoard>
       </div>
     </div>
   );
