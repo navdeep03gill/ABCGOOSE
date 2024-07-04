@@ -79,10 +79,13 @@ const useGameLogic = (time, allWords, gameMode) => {
   };
 
   const evaluateAnswer = (currGuess) => {
-    if (correctGuesses.includes(currGuess)) {
+    if (!currPrompt.synonyms.includes(currGuess)) {
+      setGameMessage("Incorrect Guess! Keep Trying!");
+      setAllGuesses((guesses) => [...guesses, [currGuess, 0]]);
+    } else if (correctGuesses.includes(currGuess)) {
       setGameMessage("You Already Guessed This Word! Keep Trying!");
       setAllGuesses((guesses) => [...guesses, [currGuess, 2]]);
-    } else if (currPrompt.synonyms.includes(currGuess)) {
+    } else {
       setScore(score + 100);
       setGameMessage("Correct Guess! Next Word:");
       setCorrectGuesses((prevItems) => [...prevItems, currGuess]);
@@ -90,9 +93,6 @@ const useGameLogic = (time, allWords, gameMode) => {
       if (gameMode === "multiWord") {
         getPrompt();
       }
-    } else {
-      setGameMessage("Incorrect Guess! Keep Trying!");
-      setAllGuesses((guesses) => [...guesses, [currGuess, 0]]);
     }
   };
 
@@ -100,10 +100,10 @@ const useGameLogic = (time, allWords, gameMode) => {
     setScore(0);
     setSeconds(time);
     setCorrectGuesses([]);
+    setAllGuesses([]);
   };
 
   const gameOver = () => {
-    console.log(allGuesses);
     setGameMessage("");
     setPlayButton("Play Again!");
     setInputBoxShow(false);
@@ -134,6 +134,7 @@ const useGameLogic = (time, allWords, gameMode) => {
     setTimeVisible(true);
     startTimer();
     setPageEntry(false);
+    setInput("");
   };
 
   const handleKeyPress = (event) => {

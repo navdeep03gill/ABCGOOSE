@@ -1,3 +1,54 @@
+.game-results {
+  width: 100%;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #d1fcf6;
+  border: 1px solid black;
+}
+
+.tab-button:hover {
+  background-color: #53f2dd;
+}
+
+.tab-button:focus {
+  background-color: #53f2dd;
+}
+
+.word-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.word-container {
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 5px;
+  color: white;
+}
+
+.correct-guess {
+  background-color: green;
+}
+
+.already-guessed {
+  background-color: rgb(255, 208, 0);
+  color: black; /* Adjusting text color for readability */
+}
+
+.incorrect-guess {
+  background-color: rgb(173, 36, 36);
+}
+
 .table-container {
   width: 100%;
   overflow-x: auto;
