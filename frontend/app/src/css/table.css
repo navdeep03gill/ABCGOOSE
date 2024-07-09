@@ -31,11 +31,32 @@
   flex-wrap: wrap;
 }
 
+.word-container-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 20px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .word-container {
+  height: 35px;
+  max-height: 35px;
   padding: 5px 10px;
   margin: 5px;
   border-radius: 5px;
   color: white;
+  cursor: pointer;
+}
+
+.detail-container {
+  flex: 1;
+  padding: 5px 10px;
+  margin: 3px;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  font-weight: 500;
 }
 
 .correct-guess {

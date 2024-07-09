@@ -14,32 +14,6 @@ auth = HTTPBasicAuth()
 CORS(app, resources={r"/*": {"origins": "*"}}, support_credentials=True)
 USER_DATA = {"admin": "SuperSecretPwd"}
 
-
-# def connect_to_db():
-#     conn = sqlite3.connect("database.db")
-#     return conn
-
-
-# def get_words():
-#     wordDb = WordDatabase()
-#     allWords = wordDb.get_all_words_with_synonyms()
-#     print(allWords)
-#     return allWords
-
-
-# def get_random_key_value_pairs(my_dict):
-#     wordDb = WordDatabase()
-#     allWords = wordDb.get_all_words_with_synonyms()
-#     print(wordDb.wordCount())
-
-#     if len(allWords) < 5:
-#         raise ValueError("Dictionary should have at least 5 items")
-
-#     random_keys = random.sample(allWords.keys(), 5)
-#     random_pairs = {key: allWords[key] for key in random_keys}
-#     return random_pairs
-
-
 @auth.verify_password
 def verify(username, password):
     if not (username and password):
@@ -60,8 +34,8 @@ class PrivateResource(Resource):
 
     def get_words(self):
         wordDb = WordDatabase()
-        allWords = wordDb.get_all_words_with_synonyms()
-        print(allWords)
+        allWords = wordDb.get_some_words_with_synonyms(100)
+        print("num all words", len(allWords))
         return allWords
 
     def get_random_key_value_pairs(self, my_dict):

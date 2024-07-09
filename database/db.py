@@ -1,9 +1,5 @@
 from ntpath import realpath
-from synonyms import allSynonyms
 import sys
-
-sys.path.append("../")
-from webscrape.scraperWordHippo import fetchNewWords
 
 import sqlite3
 
@@ -124,9 +120,49 @@ class WordDatabase:
         print(result)
         return result
 
+    def get_some_words_with_synonyms(self, limit):
+        if limit < 2:
+            print("At least two words need to be fetched")
+            return
+        self.c.execute(
+            """
+            SELECT Words.word_id, Words.word_name
+            FROM Words
+            ORDER BY RANDOM()
+            LIMIT ?
+        """,
+            (limit,),
+        )
+        initial_words = self.c.fetchall()
+        word_ids = tuple(row[0] for row in initial_words)
+        
+        self.c.execute(
+            """
+            SELECT Words.word_id, Words.word_name, Words.definition, Synonyms.synonym
+            FROM Words
+            INNER JOIN Synonyms ON Words.word_id = Synonyms.word_id
+            WHERE Words.word_id IN {}
+        """.format(str(word_ids))
+        )
+
+        result = {}
+        for row in self.c.fetchall():
+            word_id, word_name, definition, synonym = row
+            if word_id not in result:
+                result[word_id] = {
+                    "word": word_name,
+                    "definition": definition,
+                    "synonyms": [],
+                }
+            result[word_id]["synonyms"].append(synonym)
+
+        toret = []
+        for word_id, word_info in result.items():
+            toret.append(word_info)
+        return toret
+
+
     def get_all_words_with_synonyms(self):
-        # conn = sqlite3.connect("words.db")
-        # c = conn.cursor()
         self.c.execute(
             """
             SELECT Words.word_id, Words.word_name, Words.definition, Synonyms.synonym
@@ -150,8 +186,8 @@ class WordDatabase:
             toret.append(word_info)
         return toret
 
-    def populateTable(self, newSynonyms):
-        for word in newSynonyms:
+    def populateTable(self, newData):
+        for word in newData:
             self.c.execute(
                 """
                 SELECT *
@@ -164,7 +200,7 @@ class WordDatabase:
             if len(result) > 0:
                 continue
             self.addWord(
-                word, newSynonyms[word]["definition"], newSynonyms[word]["synonyms"]
+                word, newData[word]["definition"], newData[word]["synonyms"]
             )
 
     def checkDuplicates(self):
@@ -179,6 +215,9 @@ class WordDatabase:
         result = self.c.fetchall()
 
     def cleanTables(self):
+        '''
+        Remove words that have zero synonyms
+        '''
         self.c.execute(
             """
             SELECT * FROM Words
@@ -213,6 +252,14 @@ class WordDatabase:
         print(result)
         return result
 
+    def print_words_with_synonyms(self, results):
+        for r in results:
+            print("\nWord:", r['word'])
+            print("Definition: ", r["definition"])
+            print("Synonyms: ", r["synonyms"])
+
+
+
     def commitChanges(self):
         # Commit Connection
         self.conn.commit()
@@ -226,13 +273,13 @@ def main():
     # wordDb.dropTable("Words")
     # wordDb.dropTable("Synyonms")
     # wordDb.createTables()
-    # newWords = fetchNewWords()
-    # wordDb.populateTable(newWords)
-    duplicates = wordDb.checkDuplicates()
-    print(duplicates)
-    print("wordDB word count: ")
+    # duplicates = wordDb.checkDuplicates()
+    # print(duplicates)
     # wordDb.previewWords()
-    wordDb.wordCount()
+    # print("wordDB word count: ")
+    # wordDb.wordCount()
+    some_words = wordDb.get_some_words_with_synonyms(5)
+    wordDb.print_words_with_synonyms(some_words)
     wordDb.commitChanges()
 
 

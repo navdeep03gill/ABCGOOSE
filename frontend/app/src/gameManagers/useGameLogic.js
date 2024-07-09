@@ -1,6 +1,5 @@
 // useGameLogic.js
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const useGameLogic = (time, allWords, gameMode) => {
   const [inputBoxShow, setInputBoxShow] = useState(false);
@@ -63,11 +62,9 @@ const useGameLogic = (time, allWords, gameMode) => {
   };
 
   const getPrompt = () => {
-    if (currIdx == null || currIdx >= allWords.length) {
-      var max = allWords.length;
-      var idx = Math.floor(Math.random() * max);
-      currIdx = idx;
-    }
+    let max = allWords.length;
+    let idx = Math.floor(Math.random() * max);
+    currIdx = idx;
     const newWord = allWords[currIdx];
     const newPrompt = {
       word: newWord.word,
@@ -81,15 +78,15 @@ const useGameLogic = (time, allWords, gameMode) => {
   const evaluateAnswer = (currGuess) => {
     if (!currPrompt.synonyms.includes(currGuess)) {
       setGameMessage("Incorrect Guess! Keep Trying!");
-      setAllGuesses((guesses) => [...guesses, [currGuess, 0]]);
+      setAllGuesses((guesses) => [...guesses, [currGuess, currPrompt.word, 0]]);
     } else if (correctGuesses.includes(currGuess)) {
       setGameMessage("You Already Guessed This Word! Keep Trying!");
-      setAllGuesses((guesses) => [...guesses, [currGuess, 2]]);
+      setAllGuesses((guesses) => [...guesses, [currGuess, currPrompt.word, 2]]);
     } else {
       setScore(score + 100);
       setGameMessage("Correct Guess! Next Word:");
       setCorrectGuesses((prevItems) => [...prevItems, currGuess]);
-      setAllGuesses((guesses) => [...guesses, [currGuess, 1]]);
+      setAllGuesses((guesses) => [...guesses, [currGuess, currPrompt.word, 1]]);
       if (gameMode === "multiWord") {
         getPrompt();
       }
@@ -104,6 +101,7 @@ const useGameLogic = (time, allWords, gameMode) => {
   };
 
   const gameOver = () => {
+    console.log(allGuesses);
     setGameMessage("");
     setPlayButton("Play Again!");
     setInputBoxShow(false);

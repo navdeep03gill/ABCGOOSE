@@ -35,6 +35,7 @@ const useFetchWords = () => {
     fetchData();
   }, []);
 
+  console.log("useFetchWords", allWords.length);
   return allWords;
 };
 
