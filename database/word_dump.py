@@ -1,51 +1,46 @@
-import requests
-import json
 from db import WordDatabase
-import sqlite3
 import sys
 sys.path.append("../")
 from webscraper.scraperWordHippo import fetchNewWords
 
 
-class wordAddCron:
+class WordAddCron:
     def __init__(self):
         self.word_db = WordDatabase()
 
-    def makeLower(self, synonyms):
-        for i in range(len(synonyms)):
-            synonyms[i] = synonyms[i].lower()
+    def make_lower(self, synonyms):
+        for i, synonym in enumerate(synonyms):
+            synonyms[i] = synonym.lower()
         return synonyms
     
-    def removeSynonymsInDefinition(self, definition, synonyms):
+    def remove_synonyms_in_definition(self, definition, synonyms):
         definition_words = definition.lower().split()
         final_synonyms = []
-        synonyms = self.makeLower(synonyms)
+        synonyms = self.make_lower(synonyms)
         final_synonyms = [syn for syn in synonyms if syn not in definition_words]
         return final_synonyms
 
-    def preProcessSynonyms(self, newData):
-        changedData = newData.copy()
-        for data in newData:
-            definition = changedData[data]["definition"]
-            synonyms = changedData[data]["synonyms"]
-            changedData[data]["synonyms"] = self.removeSynonymsInDefinition(definition, synonyms)
-        return changedData
+    def pre_process_synonyms(self, new_data):
+        changed_data = new_data.copy()
+        for data in new_data:
+            definition = changed_data[data]["definition"]
+            synonyms = changed_data[data]["synonyms"]
+            changed_data[data]["synonyms"] = self.remove_synonyms_in_definition(definition, synonyms)
+        return changed_data
 
-    def singleDataDump(self):
-        newData = fetchNewWords()
-        updatedData = self.preProcessSynonyms(newData)
-
-        for word in updatedData:
+    def single_data_dump(self):
+        new_data = fetchNewWords()
+        updated_data = self.pre_process_synonyms(new_data)
+        for word, word_data in updated_data.items():
             print(word + ": ")
-            print(updatedData[word])
+            print(word_data)
+        self.word_db.populate_table(updated_data)
 
-        self.word_db.populateTable(updatedData)
-
-    def bulkDataDump(self):
+    def bulk_data_dump(self):
         for i in range(0, 10):
-            self.singleDataDump()
+            self.single_data_dump()
         return
 
 
-wordCron = wordAddCron()
-wordCron.bulkDataDump()
+word_cron = WordAddCron()
+word_cron.single_data_dump()

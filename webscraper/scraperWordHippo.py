@@ -1,4 +1,3 @@
-from threading import main_thread
 import requests
 from bs4 import BeautifulSoup
 import re

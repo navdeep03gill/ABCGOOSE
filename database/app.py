@@ -1,65 +1,54 @@
-from flask import Flask, request, jsonify, make_response
-from flask_restful import Resource, Api
-from flask_httpauth import HTTPBasicAuth
-from flask_cors import CORS, cross_origin
-import sqlite3
-from db import WordDatabase
-import random
-from flask import Flask, jsonify
+import os
+from dotenv import load_dotenv
+from flask import Flask, jsonify, request, redirect, url_for
 from flask_cors import CORS
+from db import WordDatabase 
+from auth_middleware import token_required
+
+load_dotenv()
 
 app = Flask(__name__)
-api = Api(app, prefix="/api/v1")
-auth = HTTPBasicAuth()
+
+SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret'
+app.config['SECRET_KEY'] = SECRET_KEY
+
 CORS(app, resources={r"/*": {"origins": "*"}}, support_credentials=True)
-USER_DATA = {"admin": "SuperSecretPwd"}
 
-@auth.verify_password
-def verify(username, password):
-    if not (username and password):
-        return False
-    return USER_DATA.get(username) == password
+# @app.before_request
+# def generate_csrf_token():
+#     if '_csrf_token' not in session:
+#         session['_csrf_token'] = secrets.token_hex(16)
+#     g.csrf_token = session['_csrf_token']
 
-
-class PrivateResource(Resource):
-    @auth.login_required
-    def get(self):
-        resp = make_response(self.get_words())
-        resp.headers["Access-Control-Allow-Origin"] = "*"
-        return resp
-
-    def connect_to_db(self):
-        conn = sqlite3.connect("database.db")
-        return conn
-
-    def get_words(self):
-        wordDb = WordDatabase()
-        allWords = wordDb.get_some_words_with_synonyms(100)
-        print("num all words", len(allWords))
-        return allWords
-
-    def get_random_key_value_pairs(self, my_dict):
-        wordDb = WordDatabase()
-        allWords = wordDb.get_all_words_with_synonyms()
-        print(wordDb.wordCount())
-
-        if len(allWords) < 5:
-            raise ValueError("Dictionary should have at least 5 items")
-
-        random_keys = random.sample(allWords.keys(), 5)
-        random_pairs = {key: allWords[key] for key in random_keys}
-        return random_pairs
+@app.route('/get-csrf-token', methods=['GET'])
+def get_csrf_token():
+    response = jsonify({'csrf_token': SECRET_KEY})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
-api.add_resource(PrivateResource, "/words")
+@app.route('/thesaurus/get_words')
+@token_required
+def index():
+    word_db = WordDatabase()
+    words = word_db.get_some_words_with_synonyms(limit=50)
+    return jsonify(words)
 
-# @app.route("/api/words", methods=["GET"])
-# def api_get_words():
-#     response = jsonify(get_words())
-#     return response
+
+@app.route('/create', methods=['POST'])
+@token_required
+def create():
+    data = request.json
+    new_words = data['words']
+    print(new_words)
+    for word in new_words:
+        print(word)
+        print()
+
+    word_db = WordDatabase()
+    word_db.populate_table(new_words)
+    return redirect(url_for('index')) 
 
 
-if __name__ == "__main__":
-    # app.debug = True
-    # app.run(debug=True)
-    app.run(debug=True)  # run app
+if __name__ == '__main__': 
+    app.run(debug=True) 

@@ -1,0 +1,15 @@
+drop table if exists word;
+
+create table if not exists Words (
+    word_id SERIAL PRIMARY KEY,
+    word_name TEXT NOT NULL,
+    definition TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Synonyms (
+    synonym_id SERIAL PRIMARY KEY,
+    word_id INTEGER NOT NULL,
+    synonym TEXT NOT NULL,
+    FOREIGN KEY(word_id) REFERENCES Words(word_id)
+);
+
