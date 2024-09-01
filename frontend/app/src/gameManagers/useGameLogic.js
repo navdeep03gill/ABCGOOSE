@@ -1,5 +1,6 @@
 // useGameLogic.js
 import { useState, useEffect } from "react";
+import { useNumGameContext } from "../utils/numGamesContext";
 
 const useGameLogic = (time, allWords, gameMode) => {
   const [inputBoxShow, setInputBoxShow] = useState(false);
@@ -19,6 +20,8 @@ const useGameLogic = (time, allWords, gameMode) => {
   const [correctGuesses, setCorrectGuesses] = useState([]);
   const [allGuesses, setAllGuesses] = useState([]);
   const [pageEntry, setPageEntry] = useState(true);
+
+  const { numConsecutiveGames, setNumConsecutiveGames } = useNumGameContext();
 
   let currIdx = null;
 
@@ -98,6 +101,7 @@ const useGameLogic = (time, allWords, gameMode) => {
     setSeconds(time);
     setCorrectGuesses([]);
     setAllGuesses([]);
+    setNumConsecutiveGames(numConsecutiveGames + 1);
   };
 
   const gameOver = () => {

@@ -43,4 +43,4 @@ class WordAddCron:
 
 
 word_cron = WordAddCron()
-word_cron.single_data_dump()
+word_cron.bulk_data_dump()

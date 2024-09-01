@@ -7,7 +7,7 @@ import psycopg2
 load_dotenv()
 
 """
-This is using the DATABASE_TEST instead of production database.
+This is using the DATABASE_DEV instead of production database.
 Make sure to change back when module is fine tuned.
 
 
@@ -62,36 +62,6 @@ class WordDatabase:
         )
     
     def add_word(self, word_name, definition, synonyms):
-        """
-        self.cur.execute(
-            '''
-            select w1.word_id from words w1
-            where 
-	            not exists (
-		            select 1
-		            from words w2
-		            where w2.word_id > w1.word_id
-	            )
-            '''
-        )
-        word_count = self.cur.fetchall()[0][0]
-        word_id = word_count + 1
-
-        self.cur.execute(
-            '''
-            select s1.synonym_id from synonyms s1
-            where 
-                not exists (
-                    select 1
-                    from synonyms s2
-                    where s2.synonym_id > s1.synonym_id
-                )
-            '''
-        )
-        synonym_count = self.cur.fetchall()[0][0]
-        synonym_id = synonym_count + 1
-        print(word_id, synonym_id)
-        """
         self.cur.execute(
             '''
             INSERT INTO Words (word_name, definition) 

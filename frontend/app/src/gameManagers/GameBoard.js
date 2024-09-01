@@ -28,7 +28,7 @@ const GameBoard = ({
   const navigate = useNavigate();
 
   return (
-    <div className="container">
+    <div className="container px-10">
       <div className="top-header">
         <h1 className="font-semibold title">ABCGoose</h1>
       </div>
@@ -47,7 +47,7 @@ const GameBoard = ({
           Input the best synonym for the word below!
         </p>
       </div>
-      <div className="grid grid-flow-col grid-cols-6 gap-1">
+      <div className="grid grid-flow-col grid-cols-6 gap-1 px-5">
         <textarea
           value={promptOutput}
           disabled={true}

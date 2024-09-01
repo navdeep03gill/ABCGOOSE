@@ -27,41 +27,30 @@ const fetchAllWords = async () => {
     });
 };
 
-// const fetchAllWordsOld = async () => {
-//   let url = "http://127.0.0.1:5000/api/v1/words";
-//   let username = "admin";
-//   let password = "SuperSecretPwd";
-//   let headers = { Authorization: "Basic " + btoa(`${username}:${password}`) };
-//   return fetch(url, { method: "GET", headers: headers })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       return data;
-//     });
-// };
-
 const useFetchWords = () => {
   const [allWords, setAllWords] = useState([]);
 
+  const fetchData = async () => {
+    try {
+      const data = await fetchAllWords();
+      let improvedData = data.map((word) => {
+        return {
+          ...word,
+          synonyms: word.synonyms.map((synonym) => synonym.toLowerCase()),
+        };
+      });
+      setAllWords(improvedData);
+    } catch (error) {
+      console.error("Error fetching allWords: ", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchAllWords();
-        let improvedData = data.map((word) => {
-          return {
-            ...word,
-            synonyms: word.synonyms.map((synonym) => synonym.toLowerCase()),
-          };
-        });
-        setAllWords(improvedData);
-      } catch (error) {
-        console.error("Error fetching allWords: ", error);
-      }
-    };
     fetchData();
   }, []);
 
   console.log("useFetchWords", allWords.length);
-  return allWords;
+  return [allWords, fetchData];
 };
 
 export default useFetchWords;
