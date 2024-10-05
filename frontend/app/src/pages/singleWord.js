@@ -12,7 +12,6 @@ function SingleWord() {
     if (numConsecutiveGames % 15 === 0 && numConsecutiveGames > 0) {
       fetchWords();
       setNumConsecutiveGames(numConsecutiveGames + 1);
-      console.log(allWords);
     }
   }, [numConsecutiveGames]);
 

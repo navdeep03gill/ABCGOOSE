@@ -13,7 +13,6 @@ function MultiWord() {
     if (numConsecutiveGames % 15 === 0 && numConsecutiveGames > 0) {
       fetchWords();
       setNumConsecutiveGames(numConsecutiveGames + 1);
-      console.log(allWords);
     }
   }, [numConsecutiveGames]);
 
@@ -23,8 +22,6 @@ function MultiWord() {
     >
       <div className='App flex justify-center items-center'>
         <div className='container'>
-          {console.log(allWords)}
-          {console.log(numConsecutiveGames)}
           <MultiGameBoard time={30} allWords={allWords}></MultiGameBoard>
         </div>
       </div>
