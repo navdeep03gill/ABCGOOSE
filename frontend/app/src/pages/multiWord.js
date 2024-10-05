@@ -1,9 +1,9 @@
-import React from "react";
-import { useState, useEffect, createContext, useContext } from "react";
-import "../css/App.css";
-import MultiGameBoard from "../gameManagers/multiGameBoard";
-import useFetchWords from "../utils/fetchAllWords";
-import { NumGameContext } from "../utils/numGamesContext";
+import React from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
+import '../css/App.css';
+import MultiGameBoard from '../gameManagers/multiGameBoard';
+import useFetchWords from '../utils/fetchAllWords';
+import { NumGameContext } from '../utils/numGamesContext';
 
 function MultiWord() {
   const [numConsecutiveGames, setNumConsecutiveGames] = useState(1);
@@ -21,8 +21,8 @@ function MultiWord() {
     <NumGameContext.Provider
       value={{ numConsecutiveGames, setNumConsecutiveGames }}
     >
-      <div className="App flex justify-center items-center">
-        <div className="container">
+      <div className='App flex justify-center items-center'>
+        <div className='container'>
           {console.log(allWords)}
           {console.log(numConsecutiveGames)}
           <MultiGameBoard time={30} allWords={allWords}></MultiGameBoard>

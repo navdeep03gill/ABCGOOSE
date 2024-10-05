@@ -12,7 +12,6 @@ def token_required(f):
     def decorated(*args, **kwargs):
         if "Authorization" in request.headers:
             token = request.headers.get('Authorization')
-            print(token, current_app.config["SECRET_KEY"])
         if not token or token != current_app.config["SECRET_KEY"]:
             return {
                 "message": "Authentication Token is missing!",

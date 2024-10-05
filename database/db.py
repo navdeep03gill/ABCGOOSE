@@ -1,7 +1,6 @@
 import sys
 import os
-from dotenv import load_dotenv, dotenv_values
-from flask import Flask, jsonify, render_template, request
+from dotenv import load_dotenv
 import psycopg2 
 
 load_dotenv()
@@ -289,12 +288,12 @@ class WordDatabase:
 
 def main():
     word_db = WordDatabase()
-    word_db.add_word("nav", "name", [])
+    # word_db.add_word("nav", "name", [])
     # word_db.clean_tables()
     # some_words = word_db.get_some_words_with_synonyms(5)
     # word_db.print_words_with_synonyms(some_words)
     # word_db.get_cardinalities()
-    word_db.commit_changes()
+    # word_db.commit_changes()
     return
 
 if __name__ == "__main__":

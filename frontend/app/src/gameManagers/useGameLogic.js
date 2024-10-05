@@ -1,18 +1,18 @@
 // useGameLogic.js
-import { useState, useEffect } from "react";
-import { useNumGameContext } from "../utils/numGamesContext";
+import { useState, useEffect } from 'react';
+import { useNumGameContext } from '../utils/numGamesContext';
 
 const useGameLogic = (time, allWords, gameMode) => {
   const [inputBoxShow, setInputBoxShow] = useState(false);
   const [sendButtonShow, setSendButtonShow] = useState(false);
   const [input, setInput] = useState(null);
-  const [promptOutput, setPromptOutput] = useState("");
+  const [promptOutput, setPromptOutput] = useState('');
   const [score, setScore] = useState(0);
-  const [gameMessage, setGameMessage] = useState("");
-  const [playButton, setPlayButton] = useState("New Game");
+  const [gameMessage, setGameMessage] = useState('');
+  const [playButton, setPlayButton] = useState('New Game');
   const [showPlayButton, setShowPlayButton] = useState(true);
-  const [timerText1, setTimerText1] = useState("");
-  const [timerText2, setTimerText2] = useState("");
+  const [timerText1, setTimerText1] = useState('');
+  const [timerText2, setTimerText2] = useState('');
   const [timeVisible, setTimeVisible] = useState(false);
   const [seconds, setSeconds] = useState(time);
   const [isRunning, setIsRunning] = useState(null);
@@ -59,7 +59,7 @@ const useGameLogic = (time, allWords, gameMode) => {
   const getInput = () => {
     if (input) {
       let currGuess = input.toLowerCase();
-      setInput("");
+      setInput('');
       evaluateAnswer(currGuess);
     }
   };
@@ -74,23 +74,22 @@ const useGameLogic = (time, allWords, gameMode) => {
       definition: newWord.definition,
       synonyms: newWord.synonyms,
     };
-    console.log(newPrompt.synonyms);
     setCurrPrompt(newPrompt);
   };
 
   const evaluateAnswer = (currGuess) => {
     if (!currPrompt.synonyms.includes(currGuess)) {
-      setGameMessage("Incorrect Guess! Keep Trying!");
+      setGameMessage('Incorrect Guess! Keep Trying!');
       setAllGuesses((guesses) => [...guesses, [currGuess, currPrompt.word, 0]]);
     } else if (correctGuesses.includes(currGuess)) {
-      setGameMessage("You Already Guessed This Word! Keep Trying!");
+      setGameMessage('You Already Guessed This Word! Keep Trying!');
       setAllGuesses((guesses) => [...guesses, [currGuess, currPrompt.word, 2]]);
     } else {
       setScore(score + 100);
-      setGameMessage("Correct Guess! Next Word:");
+      setGameMessage('Correct Guess! Next Word:');
       setCorrectGuesses((prevItems) => [...prevItems, currGuess]);
       setAllGuesses((guesses) => [...guesses, [currGuess, currPrompt.word, 1]]);
-      if (gameMode === "multiWord") {
+      if (gameMode === 'multiWord') {
         getPrompt();
       }
     }
@@ -105,9 +104,8 @@ const useGameLogic = (time, allWords, gameMode) => {
   };
 
   const gameOver = () => {
-    console.log(allGuesses);
-    setGameMessage("");
-    setPlayButton("Play Again!");
+    setGameMessage('');
+    setPlayButton('Play Again!');
     setInputBoxShow(false);
     setSendButtonShow(false);
     setShowPlayButton(true);
@@ -117,30 +115,30 @@ const useGameLogic = (time, allWords, gameMode) => {
   const showAnswer = () => {
     let output = `Time's up!\nWord: ${currPrompt.word}\nDefinition: ${currPrompt.definition}\nThe synonyms for ${currPrompt.word} are:\n`;
     for (const syn of currPrompt.synonyms) {
-      output += syn + ", ";
+      output += syn + ', ';
     }
     setPromptOutput(output.slice(0, -2));
   };
 
   const start = () => {
-    if (seconds === 0 || seconds < 0 || playButton === "Play Again!") {
+    if (seconds === 0 || seconds < 0 || playButton === 'Play Again!') {
       resetGame();
     }
     getPrompt();
     setInputBoxShow(true);
     setSendButtonShow(true);
     setShowPlayButton(false);
-    setGameMessage("Make a Guess!");
-    setTimerText1("You have");
-    setTimerText2(" seconds left");
+    setGameMessage('Make a Guess!');
+    setTimerText1('You have');
+    setTimerText2(' seconds left');
     setTimeVisible(true);
     startTimer();
     setPageEntry(false);
-    setInput("");
+    setInput('');
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       getInput();
     }
   };

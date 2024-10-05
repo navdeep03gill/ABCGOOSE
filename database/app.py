@@ -14,12 +14,6 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 CORS(app, resources={r"/*": {"origins": "*"}}, support_credentials=True)
 
-# @app.before_request
-# def generate_csrf_token():
-#     if '_csrf_token' not in session:
-#         session['_csrf_token'] = secrets.token_hex(16)
-#     g.csrf_token = session['_csrf_token']
-
 @app.route('/get-csrf-token', methods=['GET'])
 def get_csrf_token():
     response = jsonify({'csrf_token': SECRET_KEY})
