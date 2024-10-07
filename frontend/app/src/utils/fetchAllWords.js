@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 
 const fetchAuthToken = async () => {
-  let url = 'http://127.0.0.1:5000/get-csrf-token';
+  let url = 'http://127.0.0.1:5000/get-auth-token';
   try {
     const response = await fetch(url, { method: 'GET' });
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
     const data = await response.json();
-    const token = data['csrf_token'];
+    const token = data['auth_token']; // Adjust based on response
     return token;
   } catch (error) {
     console.error(error.message);
@@ -18,12 +18,18 @@ const fetchAuthToken = async () => {
 const fetchAllWords = async () => {
   const url = 'http://127.0.0.1:5000/thesaurus/get_words';
   const auth_token = await fetchAuthToken();
-  const headers = { Authorization: auth_token };
-  return fetch(url, { method: 'GET', headers: headers })
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
-    });
+  const headers = { Authorization: auth_token }; // Use Bearer scheme for JWT
+
+  try {
+    const response = await fetch(url, { method: 'GET', headers: headers });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 const useFetchWords = () => {
