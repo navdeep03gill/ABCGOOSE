@@ -1,24 +1,44 @@
 import os
-from dotenv import load_dotenv
-from flask import Flask, jsonify, request, redirect, url_for
+from flask import Flask, jsonify, request, redirect, url_for, current_app
 from flask_cors import CORS
+import jwt
+from jwt.exceptions import PyJWTError
+import datetime
+from middleware import token_required
 from db import WordDatabase 
-from auth_middleware import token_required
-
-load_dotenv()
 
 app = Flask(__name__)
 
-SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret'
-app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'this is a secret'
 
 CORS(app, resources={r"/*": {"origins": "*"}}, support_credentials=True)
 
-@app.route('/get-csrf-token', methods=['GET'])
-def get_csrf_token():
-    response = jsonify({'csrf_token': SECRET_KEY})
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+@app.route('/get-auth-token', methods=['GET'])
+def get_auth_token():
+    try:
+        # Generate a token with expiration time (e.g., 30 minutes)
+        token = jwt.encode({
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+        }, current_app.config['SECRET_KEY'], algorithm="HS256")
+
+        # Return the token as a JSON response
+        response = jsonify({'auth_token': token})
+        response.headers.add('Access-Control-Allow-Origin', '*')  # Adjust this based on your CORS policy
+        return response
+    # Catch JWT-specific errors
+    except PyJWTError as jwt_err:
+        return jsonify({
+            'error': 'Token generation error',
+            'message': str(jwt_err)
+        }), 500
+
+    # Catch any other unforeseen exceptions
+    except Exception as e:
+        current_app.logger.error(f"Unexpected error: {str(e)}")  # Log the actual error for debugging
+        return jsonify({
+            'error': 'Internal server error',
+            'message': str(e)
+        }), 500
 
 
 @app.route('/thesaurus/get_words')
