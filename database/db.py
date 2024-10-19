@@ -17,11 +17,13 @@ handle it. Seems unlikely we need db or table delete methods.
 
 class WordDatabase:
     def __init__(self):
-        self.conn = psycopg2.connect(database=os.getenv("DATABASE_DEV"), 
-                        user=os.getenv("DB_USER"), 
-                        password=os.getenv("DB_USER_PASSWORD"), 
-                        host=os.getenv("HOST"),
-                        port=os.getenv("PORT"))
+        self.conn = psycopg2.connect(
+            database=os.getenv("DATABASE_DEV"), 
+            user=os.getenv("DB_USER"), 
+            password=os.getenv("DB_USER_PASSWORD"), 
+            host=os.getenv("HOST"),
+            port=os.getenv("PORT")
+        )
         self.cur = self.conn.cursor()
 
     def delete_all_rows(self):
