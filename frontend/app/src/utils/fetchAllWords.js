@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const fetchAuthToken = async () => {
-  let url = 'http://127.0.0.1:5000/get-auth-token';
+  let url = 'http://54.164.187.27:5000/get-auth-token'; // 'http://127.0.0.1:8080/get-auth-token';
   try {
     const response = await fetch(url, { method: 'GET' });
     if (!response.ok) {
@@ -16,7 +16,7 @@ const fetchAuthToken = async () => {
 };
 
 const fetchAllWords = async () => {
-  const url = 'http://127.0.0.1:5000/thesaurus/get_words';
+  const url = 'http://54.164.187.27:5000/thesaurus/get_words'; // 'http://127.0.0.1:8080/thesaurus/get_words';
   const auth_token = await fetchAuthToken();
   const headers = { Authorization: auth_token }; // Use Bearer scheme for JWT
 
