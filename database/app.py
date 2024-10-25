@@ -12,10 +12,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'this is a secret'
 
 #CORS(app, resources={r"/*": {"origins": "*"}}, support_credentials=True)
-CORS(app, resources={r"/*": {"origins": 
-    ["http://localhost:3000",
-      "http://abcgoose-word-game.s3-website-us-east-1.amazonaws.com", 
-      "https://d3crrl3dlac4zm.cloudfront.net"
+CORS(app, resources={r"/*": {
+    "origins": [
+        "http://localhost:3000",
+        "http://abcgoose-word-game.s3-website-us-east-1.amazonaws.com", 
+        "https://d3crrl3dlac4zm.cloudfront.net",
+        "http://d3crrl3dlac4zm.cloudfront.net"
     ]}}, support_credentials=True)
 
 
