@@ -34,7 +34,6 @@ const fetchAllWords = async () => {
 
 const useFetchWords = () => {
   const [allWords, setAllWords] = useState([]);
-
   const fetchData = async () => {
     try {
       const data = await fetchAllWords();
