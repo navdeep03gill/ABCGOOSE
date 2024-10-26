@@ -16,10 +16,9 @@ CORS(app, resources={r"/*": {
     "origins": [
         "http://localhost:3000",
         "http://abcgoose-word-game.s3-website-us-east-1.amazonaws.com", 
-        "https://d3crrl3dlac4zm.cloudfront.net",
-        "http://d3crrl3dlac4zm.cloudfront.net",
-        "https://d3crrl3dlac4zm.cloudfront.net/singleWord",
-        "https://d3crrl3dlac4zm.cloudfront.net/multiWord",
+        "https://abcgoose.vercel.app",
+        "https://abcgoose-git-main-navdeep-projects.vercel.app",
+        "https://abcgoose-iluxebxmk-navdeep-projects.vercel.app",
     ],
     "methods": ["GET", "HEAD", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"],
     "allow_headers": "*"
@@ -78,4 +77,4 @@ def create():
 
 
 if __name__ == '__main__': 
-    app.run(host='0.0.0.0', port=8000) #app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=5000) #app.run(host='0.0.0.0', port=8080, debug=True)
