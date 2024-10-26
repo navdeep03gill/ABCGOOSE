@@ -14,11 +14,10 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'this is a secret'
 #CORS(app, resources={r"/*": {"origins": "*"}}, support_credentials=True)
 CORS(app, resources={r"/*": {
     "origins": [
-        "http://localhost:3000",
+        "http://localhost",
+        "https://abcgoose",
         "http://abcgoose-word-game.s3-website-us-east-1.amazonaws.com", 
         "https://abcgoose.vercel.app",
-        "https://abcgoose-git-main-navdeep-projects.vercel.app",
-        "https://abcgoose-iluxebxmk-navdeep-projects.vercel.app",
     ],
     "methods": ["GET", "HEAD", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"],
     "allow_headers": "*"
