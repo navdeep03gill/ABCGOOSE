@@ -16,7 +16,7 @@ CORS(app, resources={r"/*": {
     "origins": [
         "http://localhost",
         "https://abcgoose",
-        "http://abcgoose-word-game.s3-website-us-east-1.amazonaws.com", 
+        #"http://abcgoose-word-game.s3-website-us-east-1.amazonaws.com", 
         "https://abcgoose.vercel.app",
     ],
     "methods": ["GET", "HEAD", "POST", "OPTIONS", "PUT", "PATCH", "DELETE"],
