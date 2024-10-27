@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 const fetchAuthToken = async () => {
-  let url = `${process.env.REACT_APP_BACKEND_API_URL}/get-auth-token`;
+  let url = `${process.env.REACT_APP_SSL_BACKEND_URL}/get-auth-token`;
   try {
     const response = await fetch(url, { method: 'GET' });
     if (!response.ok) {
@@ -16,7 +16,7 @@ const fetchAuthToken = async () => {
 };
 
 const fetchAllWords = async () => {
-  const url = `${process.env.REACT_APP_BACKEND_API_URL}/thesaurus/get_words`;
+  const url = `${process.env.REACT_APP_SSL_BACKEND_URL}/thesaurus/get_words`;
   const auth_token = await fetchAuthToken();
   const headers = { Authorization: auth_token };
 
