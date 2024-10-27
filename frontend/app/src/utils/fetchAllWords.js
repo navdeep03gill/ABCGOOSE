@@ -52,6 +52,7 @@ const useFetchWords = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   return [allWords, fetchData];
 };
 
