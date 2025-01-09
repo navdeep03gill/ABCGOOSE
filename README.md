@@ -1,5 +1,10 @@
 # How to Play:
 
+There's a live website link now:
+https://abcgoose.vercel.app/
+
+To clone and develop locally:
+
 1. Clone the Repository
 2. Ensure you have Python, npm, and React installed on your machine
 3. Follow instructions below
