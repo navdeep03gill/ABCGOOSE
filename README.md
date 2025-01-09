@@ -5,22 +5,12 @@ https://abcgoose.vercel.app/
 
 ## Screenshots:
 
-<div>
-    <div>
-        <img src="./imgs/game_image_1.png" alt="Page 1" width="200">
-    </div>
-    <div>
-        <img src="./imgs/game_image_2.png" alt="Page 2" width="200">
-    </div>
-    <div></div><div></div><div></div>
-        <img src="./imgs/game_image_3.png" alt="Page 3" width="200">
-    </div>
-    <div>
-        <img src="./imgs/game_image_4.png" alt="Page 4" width="200">
-    </div>
-    <div>
-        <img src="./imgs/game_image_5.png" alt="Page 5" width="200">
-    </div>
+<div display="flex" flex-wrap="wrap" gap="10" justify-content="center">
+    <img src="./imgs/game_image_1.png" alt="Page 1" height="200">
+    <img src="./imgs/game_image_2.png" alt="Page 2" height="200">
+    <img src="./imgs/game_image_3.png" alt="Page 3" height="200">
+    <img src="./imgs/game_image_4.png" alt="Page 4" height="200">
+    <img src="./imgs/game_image_5.png" alt="Page 5" height="200">
 </div>
 
 ## Tasks Completed:
