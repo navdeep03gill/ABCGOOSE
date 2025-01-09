@@ -3,13 +3,35 @@
 There's a live website link now:
 https://abcgoose.vercel.app/
 
+## Screenshots:
+
+<div>
+    <div>
+        <img src="./imgs/game_image_1.png" alt="Page 1" width="200">
+    </div>
+    <div>
+        <img src="./imgs/game_image_2.png" alt="Page 2" width="200">
+    </div>
+    <div></div><div></div><div></div>
+        <img src="./imgs/game_image_3.png" alt="Page 3" width="200">
+    </div>
+    <div>
+        <img src="./imgs/game_image_4.png" alt="Page 4" width="200">
+    </div>
+    <div>
+        <img src="./imgs/game_image_5.png" alt="Page 5" width="200">
+    </div>
+</div>
+
 ## Tasks Completed:
+
 - Converted to fast-rendering and clean React.js + Tailwind.css frontend (model-view-controller paradigm)
 - Built webscraper to reliably find words, definitions, and synonyms
 - Built secure backend API with Domain, SSL Certificate, and JWT token Auth to fetch game data
 - Host backend on AWS EC2 and deploy frontend on Vercel
 
 ## TODO:
+
 - Build a Machine Learning Verification Layer for user inputs
 - Build more game modes (i.e., User manually changes the time limit)
 
