@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request, redirect, url_for, current_app
 from flask_cors import CORS
-import jwt
+from jwt import encode
 import datetime
 from middleware import token_required
 from db import WordDatabase
@@ -28,7 +28,7 @@ CORS(app, resources={r"/*": {
 def get_auth_token():
     try:
         # Generate a token with expiration time (e.g., 30 minutes)
-        token = jwt.encode({
+        token = encode({
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         }, current_app.config['SECRET_KEY'], algorithm="HS256")
 
