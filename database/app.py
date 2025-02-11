@@ -2,7 +2,7 @@ import os
 from flask import Flask, jsonify, request, redirect, url_for, current_app
 from flask_cors import CORS
 import jwt
-from jwt.exceptions import PyJWTError
+from jwt import PyJWTError
 import datetime
 from middleware import token_required
 from db import WordDatabase 
