@@ -45,7 +45,7 @@ const useFetchWords = () => {
       });
       setAllWords(improvedData);
     } catch (error) {
-      console.error('Error fetching allWords: ', error);
+      console.error('Error fetching allWords:\n', error);
     }
   };
 
