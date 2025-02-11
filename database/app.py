@@ -5,8 +5,6 @@ import jwt
 import datetime
 from middleware import token_required
 from db import WordDatabase
-from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
-
 
 app = Flask(__name__)
 
@@ -39,17 +37,16 @@ def get_auth_token():
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adjust this based on your CORS policy
         return response
     # Catch JWT-specific errors
-    except ExpiredSignatureError:
+    except jwt.ExpiredSignatureError:
         return jsonify({
             'error': 'Token generation error',
             'message': 'Token Expired'
         }), 500
-    except InvalidTokenError as jwt_err:
+    except jwt.InvalidTokenError as jwt_err:
         return jsonify({
             'error': 'Token generation error',
             'message': str(jwt_err)
         }), 500
-
     # Catch any other unforeseen exceptions
     except Exception as e:
         current_app.logger.error(f"Unexpected error: {str(e)}")  # Log the actual error for debugging
