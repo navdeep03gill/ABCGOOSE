@@ -18,11 +18,11 @@ handle it. Seems unlikely we need db or table delete methods.
 class WordDatabase:
     def __init__(self):
         self.conn = psycopg2.connect(
-            database=os.getenv("DATABASE_DEV"), 
-            user=os.getenv("DB_USER"), 
-            password=os.getenv("DB_USER_PASSWORD"), 
-            host=os.getenv("HOST"),
-            port=os.getenv("PORT")
+            database=os.getenv("SUPABASE_DBNAME"), 
+            user=os.getenv("SUPABASE_DB_USER"), 
+            password=os.getenv("SUPABASE_PASSWORD"), 
+            host=os.getenv("SUPABASE_HOST"),
+            port=os.getenv("SUPABASE_PORT")
         )
         self.cur = self.conn.cursor()
 
