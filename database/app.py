@@ -2,10 +2,11 @@ import os
 from flask import Flask, jsonify, request, redirect, url_for, current_app
 from flask_cors import CORS
 import jwt
-from jwt import PyJWTError
 import datetime
 from middleware import token_required
-from db import WordDatabase 
+from db import WordDatabase
+from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
+
 
 app = Flask(__name__)
 
@@ -38,7 +39,12 @@ def get_auth_token():
         response.headers.add('Access-Control-Allow-Origin', '*')  # Adjust this based on your CORS policy
         return response
     # Catch JWT-specific errors
-    except PyJWTError as jwt_err:
+    except ExpiredSignatureError:
+        return jsonify({
+            'error': 'Token generation error',
+            'message': 'Token Expired'
+        }), 500
+    except InvalidTokenError as jwt_err:
         return jsonify({
             'error': 'Token generation error',
             'message': str(jwt_err)
