@@ -32,3 +32,6 @@ venv/
 __pycache__/
 *.pyc
 db_venv/
+.nltk_data/
+*.nltk_data
+nltk_data

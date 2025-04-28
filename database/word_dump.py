@@ -1,4 +1,4 @@
-from db import WordDatabase
+from database.db.db import WordDatabase
 import sys
 sys.path.append("../")
 from webscraper.scraperWordHippo import fetchNewWords
