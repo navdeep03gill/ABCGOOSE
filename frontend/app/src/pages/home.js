@@ -8,6 +8,7 @@ function Home() {
   const navigate = useNavigate();
   const [singleWordClick, setSingleWordClick] = useState(false);
   const [multipleWordClick, setMultipleWordClick] = useState(false);
+  const [gooseAIWordClick, setGooseAIWordClick] = useState(false);
   return (
     <div className='App flex justify-center items-center'>
       <div>
@@ -76,7 +77,7 @@ function Home() {
           </div>
         </div>
         <div
-          style={{ marginBottom: '50px' }}
+          style={{ marginBottom: '30px' }}
           className='row d-flex justify-content-center'
         >
           <div className='col-md-auto'>
@@ -110,6 +111,55 @@ function Home() {
                   <div className='go-to-button'>
                     <button
                       onClick={() => navigate('/multiWord')}
+                      className='altGameButton'
+                    >
+                      Play
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <div
+          style={{ marginBottom: '50px' }}
+          className='row d-flex justify-content-center'
+        >
+          <div className='col-md-auto'>
+            <button
+              onClick={() => setGooseAIWordClick(!gooseAIWordClick)}
+              className='gameButton'
+            >
+              GooseGPT AI Mode
+            </button>
+            {!!gooseAIWordClick ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <div className='description-box'>
+                  <div style={{ flex: 3 }}>
+                    <div className='game-description-header'>
+                      Game Description
+                    </div>
+                    <div
+                      style={{ marginTop: '5px' }}
+                      className='game-description'
+                    >
+                      Under a 30 second game clock, attempt to guess a valid
+                      synonyms for the given word. A specially training AI bot
+                      will judge if your synonym is valid or not. If your guess
+                      is correct, you get to move on to the next word.
+                      Disclaimers: (1) the AI agent is work-in-progress, and (2)
+                      no definitions are given for the words; its more
+                      open-ended.
+                    </div>
+                  </div>
+                  <div className='go-to-button'>
+                    <button
+                      onClick={() => navigate('/aiWord')}
                       className='altGameButton'
                     >
                       Play

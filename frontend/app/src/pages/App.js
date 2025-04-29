@@ -4,6 +4,7 @@ import '../css/App.css';
 import Home from './home';
 import MultiWord from './multiWord';
 import SingleWord from './singleWord';
+import AIWord from './aiWord';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route exact path='/' element={<Home />} />
         <Route path='/singleWord' element={<SingleWord />} />
         <Route path='/multiWord' element={<MultiWord />} />
+        <Route path='/aiWord' element={<AIWord />} />
       </Routes>
     </Router>
   );
