@@ -10,4 +10,6 @@ class SynonymService:
     def create_words(self, word_list):
         self.word_db.populate_table(word_list)
     
-    # TODO: verify words with ml
+    def get_training_words(self, limit=50):
+        return self.word_db.fetch_ml_words(limit=limit)
+

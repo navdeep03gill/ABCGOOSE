@@ -20,17 +20,51 @@ def test_get():
     headers = {
         'Authorization': access_token
     }
-    response = requests.get(words_url, headers=headers)
+    words_response = requests.get(words_url, headers=headers)
 
-    if response.status_code == 200:
-        data = response.json()
+    if words_response.status_code == 200:
+        data = words_response.json()
         print(f"✅ Successfully retrieved words! Number of words: {len(data)}\n")
         for item in data:
             print(item)
             print()
     else:
-        print(f"❌ Failed to retrieve words. Status code: {response.status_code}")
+        print(f"❌ Failed to retrieve words. Status code: {words_response.status_code}")
     
+    # Test ML Words GET
+    ml_words_url = f'{base_url}/ml/get_ml_words'
+    ml_words_response = requests.get(ml_words_url, headers=headers)
+    
+    if ml_words_response.status_code == 200:
+        data = ml_words_response.json()
+        print(f"✅ Successfully retrieved ML words! Number of words: {len(data)}\n")
+        print(data)
+    else:
+        print(f"❌ Failed to retrieve ML words. Status code: {ml_words_response.status_code}")
+    
+    # Test ML Inference
+    ml_inference_url = f'{base_url}/ml/get_inference'
+    word_guess = {
+        'word1': "absolute",
+        'word2': "downright"
+    }
+    ml_headers = {
+        'Authorization': access_token,
+        'Content-Type': 'application/json'
+    }
+    ml_response = requests.post(ml_inference_url, json=word_guess, headers=ml_headers)
+    
+    if ml_response.status_code == 200:
+        data = ml_response.json()
+        print("✅ Successfully performed synonym inference!")
+        print(data)
+    else:
+        print(f"❌ Failed to retrieve ml inference. Status code: {ml_response.status_code}")
+    
+    
+    
+    
+
 # def test_insert():
 #     url = 'http://127.0.0.1:5000/create'
 #     data = {

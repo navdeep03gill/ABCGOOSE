@@ -3,6 +3,9 @@ from flask import Flask
 from flask_cors import CORS
 from routes.auth_routes import auth_blueprint
 from routes.thesaurus_routes import thesaurus_blueprint
+from routes.ml_routes import ml_blueprint
+from ml_app.setup_nltk import setup_nltk_data
+
 
 def create_app():
     app = Flask(__name__)
@@ -10,9 +13,11 @@ def create_app():
     
     CORS(app, resources={r"/*": { "origins": "*"}}, supports_credentials=True)
     
+    setup_nltk_data() # 👈 Initialize NLTK corpora and path for ML_APP
+    
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(thesaurus_blueprint, url_prefix='/thesaurus')
-    #app.register_blueprint(ml_blueprint, url_prefix='/ml')
+    app.register_blueprint(ml_blueprint, url_prefix='/ml')
     
     return app
 

@@ -230,6 +230,29 @@ class WordDatabase:
                 word, newData[word]["definition"], newData[word]["synonyms"]
             )
 
+    def fetch_ml_words(self, limit=50):
+        if limit < 2:
+            print("At least two words need to be fetched")
+            return
+        try:
+            query = f"""
+                SELECT word1
+                FROM (
+                    SELECT DISTINCT word1
+                    FROM synonym_training_data
+                ) AS big_word_list
+                ORDER BY RANDOM()
+                LIMIT {limit}
+            """
+            self.cur.execute(query)
+            result = self.cur.fetchall()
+            word_list = []
+            for item in result:
+                word_list.append(item[0])
+            return word_list
+        except Exception as e:
+            print(f"Database error in fetch_ml_words: {e}")
+            return []
 
     def clean_tables(self):
         '''
@@ -296,6 +319,8 @@ def main():
     # word_db.print_words_with_synonyms(some_words)
     # word_db.get_cardinalities()
     # word_db.commit_changes()
+    # ml_words = word_db.fetch_ml_words(limit=50)
+    # print(ml_words)
     return
 
 if __name__ == "__main__":
