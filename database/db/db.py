@@ -25,6 +25,16 @@ class WordDatabase:
             port=os.getenv("SUPABASE_PORT")
         )
         self.cur = self.conn.cursor()
+    
+    def __get_conn_and_cursor(self):
+        conn = psycopg2.connect(
+            database=os.getenv("SUPABASE_DBNAME"), 
+            user=os.getenv("SUPABASE_DB_USER"), 
+            password=os.getenv("SUPABASE_PASSWORD"), 
+            host=os.getenv("SUPABASE_HOST"),
+            port=os.getenv("SUPABASE_PORT")
+        )
+        return conn, conn.cursor()
 
     def delete_all_rows(self):
         self.cur.execute("DELETE FROM WORDS WHERE word_id IS NOT NULL")
@@ -235,6 +245,7 @@ class WordDatabase:
             print("At least two words need to be fetched")
             return
         try:
+            conn, cur = self.__get_conn_and_cursor()
             query = f"""
                 SELECT word1
                 FROM (
@@ -244,15 +255,17 @@ class WordDatabase:
                 ORDER BY RANDOM()
                 LIMIT {limit}
             """
-            self.cur.execute(query)
-            result = self.cur.fetchall()
-            word_list = []
-            for item in result:
-                word_list.append(item[0])
-            return word_list
+            cur.execute(query)
+            result = cur.fetchall()
+            return [row[0] for row in result]
         except Exception as e:
             print(f"Database error in fetch_ml_words: {e}")
             return []
+        finally:
+            if cur:
+                cur.close()
+            if conn:
+                conn.close()
 
     def clean_tables(self):
         '''

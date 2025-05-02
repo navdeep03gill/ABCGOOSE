@@ -8,7 +8,6 @@ import { NumGameContext } from '../utils/numGamesContext';
 function AIWord() {
   const [numConsecutiveGames, setNumConsecutiveGames] = useState(1);
   const [allWords, fetchWords] = useFetchMLWords();
-  console.log(allWords);
 
   useEffect(() => {
     if (numConsecutiveGames % 15 === 0 && numConsecutiveGames > 0) {

@@ -1,4 +1,3 @@
-// useGameLogic.js
 import { useState, useEffect } from 'react';
 import { useNumGameContext } from '../utils/numGamesContext';
 

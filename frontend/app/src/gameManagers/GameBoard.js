@@ -2,6 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import GameResults from '../components/gameResults';
+import SimilarityPopup from '../components/mlSimilarityPopup';
 
 const GameBoard = ({
   title,
@@ -24,6 +25,9 @@ const GameBoard = ({
   handleKeyPress,
   pageEntry,
   allGuesses,
+  popupVisible = false,
+  popupData = {},
+  setPopupVisible = () => {},
 }) => {
   const navigate = useNavigate();
 
@@ -115,6 +119,12 @@ const GameBoard = ({
       ) : (
         showPlayButton
       )}
+      <SimilarityPopup
+        isVisible={popupVisible}
+        confidence={popupData.confidence}
+        isSynonym={popupData.isSynonym}
+        onClose={() => setPopupVisible(false)}
+      />
     </div>
   );
 };

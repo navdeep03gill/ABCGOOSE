@@ -38,7 +38,6 @@ export const checkSynonymsML = async (word1, word2) => {
       throw new Error(`Response status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
     const formattedData = {
       confidence: data['confidence'],
       isSynonym: data['is_synonym'],

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNumGameContext } from '../utils/numGamesContext';
 import { checkSynonymsML } from '../utils/mlSynonymInference';
 
-const useAIGameLogic = (time, wordsList, gameMode) => {
+const useAIGameLogic = (time, wordsList) => {
   const [inputBoxShow, setInputBoxShow] = useState(false);
   const [sendButtonShow, setSendButtonShow] = useState(false);
   const [input, setInput] = useState(null);
@@ -20,6 +20,11 @@ const useAIGameLogic = (time, wordsList, gameMode) => {
   const [correctGuesses, setCorrectGuesses] = useState([]);
   const [allGuesses, setAllGuesses] = useState([]);
   const [pageEntry, setPageEntry] = useState(true);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupData, setPopupData] = useState({
+    confidence: 0,
+    isSynonym: false,
+  });
 
   const { numConsecutiveGames, setNumConsecutiveGames } = useNumGameContext();
 
@@ -84,6 +89,17 @@ const useAIGameLogic = (time, wordsList, gameMode) => {
     const word1 = currPrompt.word;
     const word2 = currGuess;
     const synonymResult = await checkSynonymsML(word1, word2);
+
+    setPopupData({
+      confidence: synonymResult.confidence,
+      isSynonym: synonymResult.isSynonym,
+    });
+    setPopupVisible(true);
+    // supposedly this is a 3 async second timeout
+    setTimeout(() => {
+      setPopupVisible(false);
+    }, 3000);
+
     if (synonymResult && !synonymResult.isSynonym) {
       setGameMessage('Incorrect Guess! Keep Trying!');
       setAllGuesses((guesses) => [...guesses, [currGuess, currPrompt.word, 0]]);
@@ -160,6 +176,9 @@ const useAIGameLogic = (time, wordsList, gameMode) => {
     handleKeyPress,
     pageEntry,
     allGuesses,
+    popupVisible,
+    popupData,
+    setPopupVisible,
   };
 };
 
