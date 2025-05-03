@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchAuthToken } from './fetchAuthToken';
 
 const fetchAllMLWords = async () => {
-  const url = `${process.env.REACT_APP_NEW_BACKEND_URL}/ml/get_ml_words`;
+  const url = `${process.env.REACT_APP_SSL_BACKEND_URL}/ml/get_ml_words`;
   const auth_token = await fetchAuthToken();
   const headers = { Authorization: auth_token };
 

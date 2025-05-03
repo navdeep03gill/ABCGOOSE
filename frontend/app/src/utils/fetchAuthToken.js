@@ -1,5 +1,5 @@
 export const fetchAuthToken = async () => {
-  const url = `${process.env.REACT_APP_NEW_BACKEND_URL}/auth/get-auth-token`;
+  const url = `${process.env.REACT_APP_SSL_BACKEND_URL}/auth/get-auth-token`;
   try {
     const response = await fetch(url, { method: 'GET' });
     if (!response.ok) {
