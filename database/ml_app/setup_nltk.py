@@ -7,18 +7,18 @@ def setup_nltk_data():
     nltk_data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'nltk_data')
     os.makedirs(nltk_data_dir, exist_ok=True)
 
-    # Set the NLTK_DATA environment variable
-    os.environ['NLTK_DATA'] = nltk_data_dir
+    # Set it manually for the nltk module to find it
+    nltk.data.path.append(nltk_data_dir)
 
     # List of datasets to download
     datasets = [
         'wordnet',
         'omw-1.4',
         'stopwords',
-        'punkt',  # Note: 'punkt_tab' may not be correct, common dataset is 'punkt'
+        'punkt',
         'brown',
         'popular',
-        'averaged_perceptron_tagger'  # 'averaged_perceptron_tagger_eng' may not exist
+        'averaged_perceptron_tagger'
     ]
 
     # Download each dataset with verification

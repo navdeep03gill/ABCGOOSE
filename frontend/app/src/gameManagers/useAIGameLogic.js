@@ -89,9 +89,13 @@ const useAIGameLogic = (time, wordsList) => {
     const word1 = currPrompt.word;
     const word2 = currGuess;
     const synonymResult = await checkSynonymsML(word1, word2);
+    const sanitizedConfidence =
+      isNaN(synonymResult.confidence) || synonymResult.confidence < 0.0001
+        ? 0.0001
+        : synonymResult.confidence;
 
     setPopupData({
-      confidence: synonymResult.confidence,
+      confidence: sanitizedConfidence,
       isSynonym: synonymResult.isSynonym,
     });
     setPopupVisible(true);
