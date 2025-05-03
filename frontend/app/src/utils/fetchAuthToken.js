@@ -11,6 +11,6 @@ export const fetchAuthToken = async () => {
     return data['auth_token'];
   } catch (error) {
     console.error('Error fetching auth token:', error.message);
-    throw error; // Re-throw the error to handle it in the calling function
+    throw error;
   }
 };
