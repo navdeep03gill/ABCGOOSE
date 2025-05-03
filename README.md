@@ -3,6 +3,14 @@
 There's a live website link now:
 https://abcgoose.vercel.app/
 
+Current Deployment Stack:
+
+- Backend: Render (free tier)
+- Database: Supabase (free tier)
+- Frontend: Vercel (free tier)
+
+Disclaimer: GooseGPT AI Game Mode does not work on the live link because Render runs out of memory to download the datasets for answer inference. To use GooseGPT AI, follow the Clone and Develop Locally guide below.
+
 ## Screenshots:
 
 <div display="flex" flex-wrap="wrap" gap="10" justify-content="center">
@@ -15,9 +23,10 @@ https://abcgoose.vercel.app/
 
 ## Tasks Completed:
 
-- Converted to fast-rendering and clean React.js + Tailwind.css frontend (model-view-controller paradigm)
+- Engineered, Trained, and Deployed Logistic Regression ML Model and integrated into GooseGPT AI Game Mode
+- Developed fast-rendering and clean React.js + Tailwind.css frontend (model-view-controller paradigm)
 - Built webscraper to reliably find words, definitions, and synonyms
-- Built secure backend API with Domain, SSL Certificate, and JWT token Auth to fetch game data
+- Built secure Flask backend API with Domain, SSL Certificate, and JWT token Auth to fetch game data
 - Host backend on AWS EC2 and deploy frontend on Vercel
 
 ## TODO:
