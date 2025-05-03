@@ -11,13 +11,20 @@ def setup_nltk_data():
     nltk.data.path.append(nltk_data_dir)
 
     # List of datasets to download
+    # datasets = [
+    #     'wordnet',
+    #     'omw-1.4',
+    #     'stopwords',
+    #     'punkt',
+    #     'brown',
+    #     'popular',
+    #     'averaged_perceptron_tagger'
+    # ]
     datasets = [
         'wordnet',
         'omw-1.4',
-        'stopwords',
         'punkt',
-        'brown',
-        'popular',
+        'stopwords',
         'averaged_perceptron_tagger'
     ]
 
