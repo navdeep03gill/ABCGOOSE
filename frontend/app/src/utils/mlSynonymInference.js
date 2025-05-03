@@ -1,8 +1,8 @@
 let cachedToken = null;
 
-const fetchAuthToken = async () => {
+const fetchCachedAuthToken = async () => {
   if (cachedToken) return cachedToken;
-  let url = `${process.env.REACT_APP_TESTING_URL}/auth/get-auth-token`;
+  let url = `${process.env.REACT_APP_NEW_BACKEND_URL}/auth/get-auth-token`;
   try {
     const response = await fetch(url, { method: 'GET' });
     if (!response.ok) {
@@ -18,8 +18,8 @@ const fetchAuthToken = async () => {
 };
 
 export const checkSynonymsML = async (word1, word2) => {
-  let url = `${process.env.REACT_APP_TESTING_URL}/ml/get_inference`;
-  const auth_token = await fetchAuthToken();
+  let url = `${process.env.REACT_APP_NEW_BACKEND_URL}/ml/get_inference`;
+  const auth_token = await fetchCachedAuthToken();
   const ml_headers = {
     Authorization: auth_token,
     'Content-Type': 'application/json',

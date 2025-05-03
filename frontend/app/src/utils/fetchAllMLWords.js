@@ -1,22 +1,8 @@
 import { useState, useEffect } from 'react';
-
-const fetchAuthToken = async () => {
-  let url = `${process.env.REACT_APP_TESTING_URL}/auth/get-auth-token`;
-  try {
-    const response = await fetch(url, { method: 'GET' });
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-    const data = await response.json();
-    const token = data['auth_token'];
-    return token;
-  } catch (error) {
-    console.error(error.message);
-  }
-};
+import { fetchAuthToken } from './fetchAuthToken';
 
 const fetchAllMLWords = async () => {
-  const url = `${process.env.REACT_APP_TESTING_URL}/ml/get_ml_words`;
+  const url = `${process.env.REACT_APP_NEW_BACKEND_URL}/ml/get_ml_words`;
   const auth_token = await fetchAuthToken();
   const headers = { Authorization: auth_token };
 
@@ -26,7 +12,6 @@ const fetchAllMLWords = async () => {
       throw new Error(`Response status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error.message);
